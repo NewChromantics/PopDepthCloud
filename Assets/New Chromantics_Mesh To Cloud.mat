@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Chromantics_Mesh To Cloud
+  m_Shader: {fileID: 4800000, guid: 31dba2291ebfa41438fa5adbb5cc0205, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - BeeAtlas:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - DepthTexture:
+        m_Texture: {fileID: 2800000, guid: 6cf7dbe5e36ea443ca84389a663d9eab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - WorldPositions:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - AtlasSectionScale: 1
+    - BeeScale: 1
+    - Billboard: 1
+    - ClipInsideCameraRadius: 0.5
+    - ClipRadius: 0.59
+    - ColourMult: 1
+    - ColourSquaredFactor: 0
+    - Debug_ClipRadius: 0
+    - Debug_TriangleUv: 0
+    - DepthMax: 0
+    - DepthMin: 100
+    - FogStrength: 1
+    - ForceAtlasIndex: -1
+    - MaxBeesThousand: 10
+    - MinDistanceFromCamera: 0
+    - MinScreenSize: 0
+    - RandomAtlas: 0
+    - TriangleScale: 2
+    m_Colors: []
