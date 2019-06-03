@@ -10,9 +10,6 @@ using System;
 
 
 [System.Serializable]
-public class UnityEvent_Hostname : UnityEngine.Events.UnityEvent<string> { }
-
-[System.Serializable]
 public struct PopServerDiscoverResponse
 {
 	public string[] Addresses;

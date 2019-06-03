@@ -112,6 +112,112 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &214653922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214653924}
+  - component: {fileID: 214653923}
+  - component: {fileID: 214653925}
+  m_Layer: 0
+  m_Name: ServerDiscovery
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &214653923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214653922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 977bd2f97440e439bb861d4733752836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoConnectOnDiscovery: 1
+  DisableOnDiscovery: 1
+  OnDiscoveredHost:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 214653925}
+        m_MethodName: Connect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEvent_Hostname, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  BroadcastString: hello
+  BroadcastPort: 9999
+  BroadcastEveryXSeconds: 5
+--- !u!4 &214653924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214653922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 56.62085, y: 19.042875, z: 62.778816}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &214653925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214653922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8244392822a44bc9a5c4aca45be4ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnConnecting:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEvent_Hostname, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  OnConnected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEvent_Hostname, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  OnDisconnected:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEvent_HostnameError, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  OnMessageBinary:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEvent_PopMessageBinary, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  OnMessageText:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEvent_PopMessageText, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  MaxJobsPerFrame: 1000
+  DefaultPort: 1234
+  Hosts: []
+  RetryTimeSecs: 1
 --- !u!1 &1380239043
 GameObject:
   m_ObjectHideFlags: 0
