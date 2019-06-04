@@ -11,16 +11,10 @@
 		DepthClipBelow("DepthClipBelow",Range(0,1)) = 0
 		DepthMin("DepthMin", Range(0,100) ) = 0
 		DepthMax("DepthMax", Range(0,100) ) = 20
-		TriangleScale("TriangleScale", Range(0.01,2) ) = 0.1
+		TriangleScale("TriangleScale", Range(0.01,0.1) ) = 0.1
 		[Toggle]Billboard("Billboard", Range(0,1) ) = 1
-		ForceAtlasIndex("ForceAtlasIndex", Range(-1,3) ) = -1
 		ClipRadius("ClipRadius", Range(0,1) ) = 1
-		AtlasSectionScale("AtlasSectionScale", Range(0.5,3) ) = 1
-		RandomAtlas("RandomAtlas", Range(0,1) ) = 0
-
-		ColourMult("ColourMult", Range(1,2) ) = 1
-		ColourSquaredFactor("ColourSquaredFactor", Range(0,1) ) = 0
-
+		
 		Debug_ClipRadius("Debug_ClipRadius", Range(0,1) ) = 0
 		Debug_TriangleUv("Debug_TriangleUv", Range(0,1) ) = 0
 
@@ -163,6 +157,11 @@
 			
 			}
 			
+			float Range(float Min,float Max,float Value)
+			{
+				return (Value-Min) / (Max-Min);
+			}
+			
 			float3 GetWorldPos(int Index,out float DepthNormal)
 			{
 				float2 uv;
@@ -172,6 +171,7 @@
 				//float2 uv = float2( x, y ) * DepthTexture_TexelSize.xy;
 				
 				DepthNormal = tex2Dlod( DepthTexture, float4( uv, 0, 0 ) ).x;
+				DepthNormal = Range( DepthClipBelow, 1.0, DepthNormal );
 				float Depth = lerp( DepthMin, DepthMax, DepthNormal );
 				float x = xy.x /(float)VertexCountWide;
 				float y = xy.y /(float)VertexCountHigh;
@@ -187,10 +187,14 @@
 				v2f o;
 
 				float4 LocalPos = v.LocalPosition;
+				//	we set z to the index to prevent overdraw issues when something renders the raw depth
+				LocalPos.z = 0;
 
 				int BeeIndex = v.TriangleIndex_CornerIndex.x;
 				float DepthNormal;
 				float3 WorldPos = GetWorldPos(BeeIndex,DepthNormal);
+				float4 WorldPos4 = mul(unity_ObjectToWorld,float4(WorldPos,1));
+				WorldPos.xyz = WorldPos4.xyz / WorldPos4.w;
 				
 				float ScalarCorrection = GetScreenCorrectionScalar( WorldPos, LocalPos * TriangleScale );
 
@@ -222,7 +226,7 @@
 					o.ClipPos = 0;
 				}
 				
-				if ( DepthNormal < DepthClipBelow )
+				if ( DepthNormal < 0 )
 				{
 					o.ClipPos = 0;
 				}
@@ -231,6 +235,7 @@
 				float IndexNorm = BeeIndex / 10000.0f;
 				o.Colour = NormalToRedGreen( IndexNorm );
 				o.Colour = float3(DepthNormal,DepthNormal,DepthNormal);
+				o.Colour = NormalToRedGreen(DepthNormal);
 				
 				o.LocalPos = LocalPos;
 				o.WorldPos = WorldPos;

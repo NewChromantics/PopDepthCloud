@@ -21,9 +21,10 @@ public class MakeDumbTriangleMesh : MonoBehaviour
     
 	public static void AddTriangleToMesh(ref List<Vector3> Positions,ref List<int> Indexes,ref List<Vector2> Uvs,Vector3 Position,int Index)
 	{
-		var pos0 = new Vector3( 0,-1,0 ) + Position;
-		var pos1 = new Vector3( -1,0.5f,0 ) + Position;
-		var pos2 = new Vector3( 1,0.5f,0 ) + Position;
+		//	gr: increment z so overdraw doesn't kill performance when something tries to render the original mesh
+		var pos0 = new Vector3( 0,-1,Index ) + Position;
+		var pos1 = new Vector3( -1,0.5f, Index) + Position;
+		var pos2 = new Vector3( 1,0.5f, Index) + Position;
 
 		Positions.Add( pos0 );
 		Uvs.Add( new Vector2(Index,0) );
