@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: New Chromantics_Mesh To Cloud
   m_Shader: {fileID: 4800000, guid: 31dba2291ebfa41438fa5adbb5cc0205, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: DEPTHCLIPZERO_ON DEPTHTEXTUREFLIP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 6cf7dbe5e36ea443ca84389a663d9eab, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -45,9 +45,11 @@ Material:
     - ColourSquaredFactor: 0
     - Debug_ClipRadius: 0
     - Debug_TriangleUv: 0
-    - DepthMax: 0
-    - DepthMin: 100
-    - DepthTextureFlip: 0
+    - DepthClipBelow: 0.41
+    - DepthClipZero: 1
+    - DepthMax: 100
+    - DepthMin: 0
+    - DepthTextureFlip: 1
     - DepthTextureMirror: 0
     - FogStrength: 1
     - ForceAtlasIndex: -1
@@ -55,5 +57,7 @@ Material:
     - MinDistanceFromCamera: 0
     - MinScreenSize: 0
     - RandomAtlas: 0
-    - TriangleScale: 2
+    - TriangleScale: 1.08
+    - VertexCountHigh: 400
+    - VertexCountWide: 400
     m_Colors: []

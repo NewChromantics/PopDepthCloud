@@ -27,8 +27,6 @@
 		ClipInsideCameraRadius("ClipInsideCameraRadius", Range(0,1) ) = 0.5
 		MinDistanceFromCamera("MinDistanceFromCamera", Range(0,1) ) = 0
 
-		MaxBeesThousand("MaxBeesThousand", Range(1,10) ) = 10
-
 		MinScreenSize("MinScreenSize", Range(0,0.1) ) = 0
 	}
 	SubShader
@@ -74,7 +72,6 @@
 			float AtlasSectionScale;
 
 			int ForceAtlasIndex;
-			float MaxBeesThousand;
 
 			float ClipRadius;
 			float Debug_ClipRadius;
@@ -147,6 +144,7 @@
 			//	this w/h should match the vertex count
 			int VertexCountHigh;
 			int VertexCountWide;
+			#define INDEX_COUNT	(VertexCountHigh*VertexCountWide)
 			void IndexToXy(int Index,out int2 xy,out float2 uv)
 			{
 				int x = Index % VertexCountWide;
@@ -175,7 +173,9 @@
 				
 				DepthNormal = tex2Dlod( DepthTexture, float4( uv, 0, 0 ) ).x;
 				float Depth = lerp( DepthMin, DepthMax, DepthNormal );
-				float3 WorldPos = float3( xy.x, xy.y, Depth );
+				float x = xy.x /(float)VertexCountWide;
+				float y = xy.y /(float)VertexCountHigh;
+				float3 WorldPos = float3( x, y, Depth );
 				return WorldPos;
 			}
 			
@@ -215,11 +215,6 @@
 				{
 					WorldPos += LocalPos * TriangleScale;
 					o.ClipPos = UnityWorldToClipPos( float4(WorldPos,1) );
-				}
-
-				if ( BeeIndex > MaxBeesThousand*1000.0f )
-				{
-					o.ClipPos = 0;
 				}
 
 				if ( DistanceToCamera < ClipInsideCameraRadius )
