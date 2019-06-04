@@ -61,6 +61,8 @@ public class KinectClient : MonoBehaviour
 	public UnityEvent_PopMessageBinary OnMessageBinary;
 	public UnityEvent_PopMessageText OnMessageText;
 
+	public bool EnableDebug = true;
+
 	//	move these jobs to a thread!
 	[Range(1, 5000)]
 	public int MaxJobsPerFrame = 1000;
@@ -268,22 +270,23 @@ public class KinectClient : MonoBehaviour
 
 	public void OnTextMessage(string Message)
 	{
-		Debug_Log ("Text message: " + Message.Substring (0, 40));
+		if (EnableDebug)
+			Debug_Log ("Text message: " + Message.Substring (0, 40));
 		var Msg = new PopMessageText(Message);
 		OnMessageText.Invoke(Msg);
 	}
 
 	public void OnBinaryMessage(byte[] Message)
 	{
-		Debug_Log ("Binary Message: " + Message.Length + " bytes");
+		if ( EnableDebug )
+			Debug_Log ("Binary Message: " + Message.Length + " bytes");
 		var Msg = new PopMessageBinary(Message);
 		OnMessageBinary.Invoke(Msg);
 	}
 
 	void OnError(string Host, string Message, bool Close)
 	{
-		//SetStatus("Error: " + Message );
-		Debug.Log(Host + " error: " + Message);
+		Debug_Log(Host + " error: " + Message);
 		OnDisconnected.Invoke(Host, Message);
 
 		if (Close)

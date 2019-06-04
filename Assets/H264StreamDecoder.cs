@@ -14,6 +14,7 @@ public class H264StreamDecoder : MonoBehaviour
 	PopH264.Decoder Decoder;
 	public UnityEvent_Texture OnDepthTextureUpdated;
 	int FrameNumber = 0;
+	public bool EnableDebug = true;
 
 	public void OnBinaryData(PopMessageBinary DataMessage)
 	{
@@ -39,7 +40,8 @@ public class H264StreamDecoder : MonoBehaviour
 		var NewFrameNumber = Decoder.GetNextFrame(ref Planes, ref PlaneFormats);
 		if (!NewFrameNumber.HasValue)
 			return;
-		Debug.Log("Decoded frame " + NewFrameNumber.Value + ". Planes x" + Planes.Count);
+		if (EnableDebug)
+			Debug.Log( this.name + " decoded frame " + NewFrameNumber.Value + ". Planes x" + Planes.Count);
 		OnDepthTextureUpdated.Invoke(Planes[0]);
 	}
 

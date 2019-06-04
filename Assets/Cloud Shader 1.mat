@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Chromantics_Mesh To Cloud
+  m_Name: Cloud Shader 1
   m_Shader: {fileID: 4800000, guid: 31dba2291ebfa41438fa5adbb5cc0205, type: 3}
   m_ShaderKeywords: BILLBOARD_ON DEPTHCLIPZERO_ON DEPTHTEXTUREFLIP_ON
   m_LightmapFlags: 4
