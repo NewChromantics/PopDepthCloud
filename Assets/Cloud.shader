@@ -2,7 +2,13 @@
 {
 	Properties
 	{
-		DepthTexture("DepthTexture", 2D)  = "black" {}
+		_MainTex ("Texture", 2D) = "white" {}
+		//DepthTexture("DepthTexture", 2D)  = "black" {}
+		[Toggle]DepthTextureFlip("DepthFlip",Range(0,1)) = 1
+		[Toggle]DepthTextureMirror("DepthTextureMirror",Range(0,1)) = 1
+		[IntRange]VertexCountWide("VertexCountWide",Range(1,1000) ) = 100
+		[IntRange]VertexCountHigh("VertexCountHigh",Range(1,1000) ) = 100
+		DepthClipBelow("DepthClipBelow",Range(0,1)) = 0
 		DepthMin("DepthMin", Range(0,100) ) = 0
 		DepthMax("DepthMax", Range(0,100) ) = 20
 		TriangleScale("TriangleScale", Range(0.01,2) ) = 0.1
@@ -53,9 +59,12 @@
 				float2 LocalPos : TEXCOORD1;
 				float3 WorldPos : TEXCOORD2;
 			};
-
-			sampler2D DepthTexture;
-			float4 DepthTexture_TexelSize;
+			
+			
+			sampler2D _MainTex;
+			float4 _MainTex_TexelSize;
+			#define DepthTexture _MainTex
+			#define DepthTexture_TexelSize _MainTex_TexelSize
 			float DepthMin;
 			float DepthMax;
 
@@ -86,6 +95,12 @@
 			#define ENABLE_RANDOMATLAS	( RandomAtlas > 0.5f )
 			#define ENABLE_BILLBOARD	( Billboard > 0.5f )
 			
+			float DepthClipBelow;
+			float DepthTextureFlip;
+			float DepthTextureMirror;
+			#define DEPTHTEXTURE_FLIP	(DepthTextureFlip>0.5f)
+			#define DEPTHTEXTURE_MIRROR	(DepthTextureMirror>0.5f)
+		
 			
 						
 			float3 NormalToRedGreen(float Normal)
@@ -127,21 +142,34 @@
 				return MinScreenSize / ScreenSize;					
 			}
 			
-			#define Width	100
-			#define Height	100
+			//#define DepthTexture_Width	((int)(DepthTexture_TexelSize.z))
+			//#define DepthTexture_Height	((int)(DepthTexture_TexelSize.w))
+			//	this w/h should match the vertex count
+			int VertexCountHigh;
+			int VertexCountWide;
 			void IndexToXy(int Index,out int2 xy,out float2 uv)
 			{
-				int x = Index % Width;
-				int y = Index / Width;
+				int x = Index % VertexCountWide;
+				int y = Index / VertexCountWide;
+
 				xy = int2(x,y);
-				uv.x = x / (float)Width;
-				uv.y = y / (float)Height;
+				
+				uv.x = x / (float)VertexCountWide;
+				uv.y = y / (float)VertexCountHigh;
+				
+				if ( DEPTHTEXTURE_MIRROR)
+					uv.x = 1.0f -uv.x;
+				if ( DEPTHTEXTURE_FLIP)
+					uv.y = 1.0f - uv.y;
+			
+			
 			}
 			
 			float3 GetWorldPos(int Index,out float DepthNormal)
 			{
 				float2 uv;
 				int2 xy;
+		
 				IndexToXy( Index, xy, uv );
 				//float2 uv = float2( x, y ) * DepthTexture_TexelSize.xy;
 				
@@ -195,6 +223,11 @@
 				}
 
 				if ( DistanceToCamera < ClipInsideCameraRadius )
+				{
+					o.ClipPos = 0;
+				}
+				
+				if ( DepthNormal < DepthClipBelow )
 				{
 					o.ClipPos = 0;
 				}

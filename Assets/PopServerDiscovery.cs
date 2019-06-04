@@ -34,6 +34,10 @@ public class PopServerDiscovery : MonoBehaviour
 	//	multithread, queue results :/
 	List<string>	FoundHosts = null;
 
+	[Header("If include list isn't empty, it MUST match one. If any exclude matched, it's excluded.")]
+	public List<string> HostFilterExclude;
+	public List<string> HostFilterInclude;
+
 	void OnEnable()
 	{
 		Socket = new UdpClient();
@@ -92,6 +96,36 @@ public class PopServerDiscovery : MonoBehaviour
 	}
 
 
+	void OnRecieveHost(string Host)
+	{
+		if (FoundHosts == null)
+			FoundHosts = new List<string>();
+
+		//	check it's a match
+		bool Included = true;
+		bool Excluded = false;
+
+		if (HostFilterInclude != null && HostFilterInclude.Count > 0)
+		{
+			Included = false;
+			foreach (var Match in HostFilterInclude)
+				if (Host.Contains(Match))
+					Included = true;
+		}
+
+		if (HostFilterExclude != null)
+		{
+			foreach (var Match in HostFilterExclude)
+				if (Host.Contains(Match))
+					Excluded = true;
+		}
+
+		if (Included && !Excluded)
+			FoundHosts.Add(Host);
+		else
+			Debug.LogWarning("Excluded host " + Host);
+	}
+
 	void Receive(System.IAsyncResult Result)
 	{
 		//	terminate this session to get the data
@@ -104,15 +138,13 @@ public class PopServerDiscovery : MonoBehaviour
 			var Response = JsonUtility.FromJson<PopServerDiscoverResponse>(Reply);
 
 			//	have to queue this for the mono thread in order to do anything useful
-			if (FoundHosts == null)
-				FoundHosts = new List<string>();
 			foreach (var Address in Response.Addresses)
-				FoundHosts.Add(Address);
+				OnRecieveHost(Address);
 		}
 		catch (System.Exception e)
 		{
 			Debug.LogException(e);
-			FoundHosts.Add(Reply);
+			OnRecieveHost(Reply);
 		}
 	}
 

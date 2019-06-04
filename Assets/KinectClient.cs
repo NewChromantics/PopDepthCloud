@@ -134,6 +134,7 @@ public class KinectClient : MonoBehaviour
 			OnDisconnected.Invoke(null, "No hostname specified");
 			return;
 		}
+		CurrentHostIndex++;
 
 		Debug_Log("Connecting to " + Host + "...");
 		OnConnecting.Invoke(Host);
