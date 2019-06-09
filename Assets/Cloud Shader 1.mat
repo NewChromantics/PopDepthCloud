@@ -65,6 +65,6 @@ Material:
     - UseDepthProjectionMatrix: 1
     - VertexCountHigh: 400
     - VertexCountWide: 400
-    - WorldDepthMax: 2
+    - WorldDepthMax: 4.5
     - WorldDepthMin: 0.01
     m_Colors: []
