@@ -272,6 +272,9 @@
 				o.Colour = float3(DepthNormal,DepthNormal,DepthNormal);
 				o.Colour = NormalToRedGreen(DepthNormal);
 				
+				if ( DepthNormal > 247/255.0f)
+					o.Colour = NormalToRedGreen(2);
+				
 				o.LocalPos = LocalPos;
 				o.WorldPos = WorldPos;
 

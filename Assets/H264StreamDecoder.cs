@@ -62,13 +62,14 @@ public class H264StreamDecoder : MonoBehaviour
 		
 	}
 
+	List<Texture2D> Planes;
+	List<PopH264.SoyPixelsFormat> PlaneFormats;
+
 	void Update()
 	{
 		if (Decoder == null)
 			return;
 
-		var Planes = new List<Texture2D>();
-		var PlaneFormats = new List<PopH264.SoyPixelsFormat>();
 		var NewFrameNumber = Decoder.GetNextFrame(ref Planes, ref PlaneFormats);
 		if (!NewFrameNumber.HasValue)
 			return;
