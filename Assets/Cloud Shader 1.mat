@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Cloud Shader 1
   m_Shader: {fileID: 4800000, guid: 31dba2291ebfa41438fa5adbb5cc0205, type: 3}
-  m_ShaderKeywords: BILLBOARD_ON DEPTHCLIPZERO_ON DEPTHTEXTUREFLIP_ON
+  m_ShaderKeywords: DEPTHCLIPZERO_ON DEPTHTEXTUREFLIP_ON USEDEPTHPROJECTIONMATRIX_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,7 +38,7 @@ Material:
     m_Floats:
     - AtlasSectionScale: 1
     - BeeScale: 1
-    - Billboard: 1
+    - Billboard: 0
     - CameraDepthMax: 4500
     - CameraDepthMin: 500
     - ClipInsideCameraRadius: 0.5
@@ -47,7 +47,7 @@ Material:
     - ColourSquaredFactor: 0
     - Debug_ClipRadius: 0
     - Debug_TriangleUv: 0
-    - DepthClipBelow: 0.413
+    - DepthClipBelow: 0.15
     - DepthClipZero: 1
     - DepthMax: 1
     - DepthMin: 0
@@ -59,11 +59,12 @@ Material:
     - MinDistanceFromCamera: 0
     - MinScreenSize: 0
     - RandomAtlas: 0
-    - TextureDepthMax: 2748
-    - TextureDepthMin: 191
-    - TriangleScale: 0.09
+    - TextureDepthMax: 1693
+    - TextureDepthMin: 575
+    - TriangleScale: 0.018
+    - UseDepthProjectionMatrix: 1
     - VertexCountHigh: 400
     - VertexCountWide: 400
-    - WorldDepthMax: 1
+    - WorldDepthMax: 82
     - WorldDepthMin: 0.01
     m_Colors: []

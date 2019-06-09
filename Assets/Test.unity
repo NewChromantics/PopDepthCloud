@@ -295,6 +295,7 @@ MonoBehaviour:
   EnableDebug: 0
   CloudMaterial: {fileID: 0}
   ProjectionCamera: {fileID: 0}
+  AspectHorzOverVert: 1
   WorldNear: 0.01
   WorldFar: 1
 --- !u!4 &280778837
@@ -451,8 +452,9 @@ MonoBehaviour:
   EnableDebug: 0
   CloudMaterial: {fileID: 2100000, guid: 3caa2baab497244468074b34b1479d41, type: 2}
   ProjectionCamera: {fileID: 942599083}
+  AspectHorzOverVert: 1
   WorldNear: 0.01
-  WorldFar: 1
+  WorldFar: 4.5
 --- !u!4 &942599082
 Transform:
   m_ObjectHideFlags: 0

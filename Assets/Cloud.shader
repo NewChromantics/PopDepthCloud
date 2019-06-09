@@ -9,6 +9,7 @@
 		[IntRange]VertexCountWide("VertexCountWide",Range(1,1000) ) = 100
 		[IntRange]VertexCountHigh("VertexCountHigh",Range(1,1000) ) = 100
 		DepthClipBelow("DepthClipBelow",Range(0,1)) = 0
+		[Toggle]UseDepthProjectionMatrix("UseDepthProjectionMatrix", Range(0,1)) = 0
 		//DepthProjectionMatrix("DepthProjectionMatrix", MATRIX)
 		//	quantisied range
 		TextureDepthMin("TextureDepthMin", Range(0,65000) ) = 0
@@ -71,7 +72,9 @@
 			float CameraDepthMin;
 			float CameraDepthMax;
 			float4x4 DepthProjectionMatrix;
-
+			float UseDepthProjectionMatrix;
+			#define USE_DEPTH_PROJECTION_MATRIX	( UseDepthProjectionMatrix> 0.5)
+			
 			float TriangleScale;
 			float MinScreenSize;
 			float Billboard;
@@ -185,13 +188,29 @@
 				//	turn depth texture to real depth
 				DepthNormal = tex2Dlod( DepthTexture, float4( uv, 0, 0 ) ).x;
 				
-				DepthNormal = lerp( TextureDepthMin, TextureDepthMax, DepthNormal );
-				DepthNormal = Range( CameraDepthMin, CameraDepthMax, DepthNormal);
+				float Depthmm = lerp( TextureDepthMin, TextureDepthMax, DepthNormal );
 				
-				float Depth = lerp( WorldDepthMin, WorldDepthMax, DepthNormal );
+				float DepthMetres = Depthmm / 1000.0f;
+				//DepthNormal = Range( 0, 4500.0f, DepthNormal );
+				//DepthNormal = Range( CameraDepthMin, CameraDepthMax, DepthNormal);
+				
+				float Depth = lerp( WorldDepthMin, WorldDepthMax, DepthMetres );
 				float x = xy.x /(float)VertexCountWide;
 				float y = xy.y /(float)VertexCountHigh;
 				float3 WorldPos = float3( x, y, Depth );
+				
+				if ( USE_DEPTH_PROJECTION_MATRIX )
+				{
+					float4 LocalPos;
+					LocalPos.x = lerp( -0.5, 0.5, uv.x );
+					LocalPos.y = lerp( 0.5, -0.5, uv.y );
+					LocalPos.z = -DepthMetres;
+					LocalPos.w = 1;
+					float4 WorldPos4 = mul( DepthProjectionMatrix, LocalPos );
+					//	gr: dividing moves it back to flat display
+					WorldPos = WorldPos4.xyz;// / WorldPos4.w;
+				}
+				
 				return WorldPos;
 			}
 			
@@ -242,7 +261,7 @@
 					o.ClipPos = 0;
 				}
 				
-				if ( DepthNormal < 0 )
+				if ( DepthNormal < DepthClipBelow )
 				{
 					o.ClipPos = 0;
 				}

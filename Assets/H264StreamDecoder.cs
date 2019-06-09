@@ -33,6 +33,7 @@ public class H264StreamDecoder : MonoBehaviour
 	public Material CloudMaterial;
 	PacketMeta LastPacketMeta = null;
 	public Camera ProjectionCamera;
+	public bool UseCameraProjection = false;
 
 	[Range(0.001f, 100.0f)]
 	public float WorldNear = 0.01f;
@@ -87,20 +88,26 @@ public class H264StreamDecoder : MonoBehaviour
 	{
 		Material.mainTexture = Texture;
 
+		var Aspect = Meta.HorizontalFov / Meta.VerticalFov;
 
 		//	setup camera for visualisation
 		if (ProjectionCamera)
 		{
-			ProjectionCamera.fieldOfView = Meta.HorizontalFov;
-			var Aspect = Meta.HorizontalFov / Meta.VerticalFov;
+			//	gr: fov is vertical
+			//		aspect is width / height
+			//	https://docs.unity3d.com/ScriptReference/Matrix4x4.Perspective.html
+			ProjectionCamera.fieldOfView = Meta.VerticalFov;
 			ProjectionCamera.aspect = Aspect;
 			ProjectionCamera.nearClipPlane = WorldNear;
 			ProjectionCamera.farClipPlane = WorldFar;
 		}
 
-		//	todo: make projection matrix
-		var ProjectionMatrix = ProjectionCamera ? ProjectionCamera.projectionMatrix : Matrix4x4.identity;
-		Material.SetMatrix("DepthProjectionMatrix", ProjectionMatrix);
+		//var ProjectionMatrix = ProjectionCamera ? c: Matrix4x4.identity;
+		var ProjectionMatrix = Matrix4x4.Perspective(Meta.VerticalFov, Aspect, WorldNear, WorldFar);
+
+		if (UseCameraProjection)
+			ProjectionMatrix = ProjectionCamera.projectionMatrix;
+ 		Material.SetMatrix("DepthProjectionMatrix", ProjectionMatrix);
 		Material.SetFloat("TextureDepthMin", Meta.DepthMin);
 		Material.SetFloat("TextureDepthMax", Meta.DepthMax);
 		Material.SetFloat("CameraDepthMin", Meta.MinReliableDistance);
