@@ -9,8 +9,15 @@
 		[IntRange]VertexCountWide("VertexCountWide",Range(1,1000) ) = 100
 		[IntRange]VertexCountHigh("VertexCountHigh",Range(1,1000) ) = 100
 		DepthClipBelow("DepthClipBelow",Range(0,1)) = 0
-		DepthMin("DepthMin", Range(0,100) ) = 0
-		DepthMax("DepthMax", Range(0,100) ) = 20
+		//DepthProjectionMatrix("DepthProjectionMatrix", MATRIX)
+		//	quantisied range
+		TextureDepthMin("TextureDepthMin", Range(0,65000) ) = 0
+		TextureDepthMax("TextureDepthMax", Range(0,65000) ) = 5000
+		//	full range
+		CameraDepthMin("CameraDepthMin", Range(0,65000) ) = 0
+		CameraDepthMax("CameraDepthMax", Range(0,65000) ) = 5000
+		WorldDepthMin("WorldDepthMin", Range(0,100) ) = 0
+		WorldDepthMax("WorldDepthMax", Range(0,100) ) = 20
 		TriangleScale("TriangleScale", Range(0.01,0.1) ) = 0.1
 		[Toggle]Billboard("Billboard", Range(0,1) ) = 1
 		ClipRadius("ClipRadius", Range(0,1) ) = 1
@@ -57,8 +64,13 @@
 			float4 _MainTex_TexelSize;
 			#define DepthTexture _MainTex
 			#define DepthTexture_TexelSize _MainTex_TexelSize
-			float DepthMin;
-			float DepthMax;
+			float WorldDepthMin;
+			float WorldDepthMax;
+			float TextureDepthMin;
+			float TextureDepthMax;
+			float CameraDepthMin;
+			float CameraDepthMax;
+			float4x4 DepthProjectionMatrix;
 
 			float TriangleScale;
 			float MinScreenSize;
@@ -170,9 +182,13 @@
 				IndexToXy( Index, xy, uv );
 				//float2 uv = float2( x, y ) * DepthTexture_TexelSize.xy;
 				
+				//	turn depth texture to real depth
 				DepthNormal = tex2Dlod( DepthTexture, float4( uv, 0, 0 ) ).x;
-				DepthNormal = Range( DepthClipBelow, 1.0, DepthNormal );
-				float Depth = lerp( DepthMin, DepthMax, DepthNormal );
+				
+				DepthNormal = lerp( TextureDepthMin, TextureDepthMax, DepthNormal );
+				DepthNormal = Range( CameraDepthMin, CameraDepthMax, DepthNormal);
+				
+				float Depth = lerp( WorldDepthMin, WorldDepthMax, DepthNormal );
 				float x = xy.x /(float)VertexCountWide;
 				float y = xy.y /(float)VertexCountHigh;
 				float3 WorldPos = float3( x, y, Depth );

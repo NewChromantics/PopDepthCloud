@@ -154,6 +154,7 @@ public class KinectClient : MonoBehaviour
 				{
 					SocketConnecting = false;
 					Socket = NewSocket;
+					Debug_Log("Connected to " + Host );
 					OnConnected.Invoke(Host);
 				});
 			};

@@ -39,8 +39,10 @@ Material:
     - AtlasSectionScale: 1
     - BeeScale: 1
     - Billboard: 1
+    - CameraDepthMax: 4500
+    - CameraDepthMin: 500
     - ClipInsideCameraRadius: 0.5
-    - ClipRadius: 0.534
+    - ClipRadius: 0.18
     - ColourMult: 1
     - ColourSquaredFactor: 0
     - Debug_ClipRadius: 0
@@ -57,7 +59,11 @@ Material:
     - MinDistanceFromCamera: 0
     - MinScreenSize: 0
     - RandomAtlas: 0
+    - TextureDepthMax: 2748
+    - TextureDepthMin: 191
     - TriangleScale: 0.09
     - VertexCountHigh: 400
     - VertexCountWide: 400
+    - WorldDepthMax: 1
+    - WorldDepthMin: 0.01
     m_Colors: []
